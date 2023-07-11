@@ -15,16 +15,27 @@ cv2.imshow("bitwise_not", binary)
 
 contours, hierarchy = cv2.findContours(binary, cv2.RETR_CCOMP, cv2.CHAIN_APPROX_NONE)[-2:]
 
-cv2.drawContours(src, contours, -1, (255, 0, 0), 4)
+
+
+
+cv2.drawContours(src, contours, -1, (0, 0, 0), 4)
 cv2.imshow("drawContours", src)
 
+
+
 for i in range(len(contours)):
+
+
     epsilon = 0.01 * cv2.arcLength(contours[i], True)
     approx = cv2.approxPolyDP(contours[i], epsilon, True)
 
-    cv2.drawContours(src, [approx], 0, (0, 0, 255), 2)
+    cv2.drawContours(src, [approx], 0, (0, 0, 0), 2)
 
     contour_area = len(approx)
+
+    area = cv2.contourArea(contours[i])
+    print(area)
+
     cv2.putText(src, "index is ="+str(i),(approx[0][0][0], approx[0][0][1] + 30), cv2.FONT_HERSHEY_COMPLEX, 0.8, (0, 255, 0), 1)
     cv2.putText(src, str(contour_area), tuple(approx[0][0]), cv2.FONT_HERSHEY_COMPLEX, 0.8, (0, 255, 0), 1)
 
@@ -40,6 +51,18 @@ for i in range(len(contours)):
         cv2.putText(src,"circle", (approx[0][0][0], approx[0][0][1] + 50), cv2.FONT_HERSHEY_COMPLEX, 0.8,(0, 255, 0), 1)
     else:
          print("지정되지않은 도형")
+
+    x, y, w, h = cv2.boundingRect(contours[i])
+    cv2.rectangle(src, (x, y), (x + w, y + h), (0, 255, 0), 2)  # 사각형을 그린다
+    width = w
+    height = h
+    print("가로 길이:", width)
+    print("세로 길이:", height)
+    #도형의 가로세로
+
+
+
+
 
 cv2.imshow("src", src)
 cv2.waitKey(0)
